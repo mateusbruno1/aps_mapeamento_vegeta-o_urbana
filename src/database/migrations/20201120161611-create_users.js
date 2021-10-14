@@ -7,7 +7,15 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
+      cep: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      state: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -26,7 +34,11 @@ module.exports = {
         allowNull: true,
         defaultValue: '',
       },
-
+      city: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: '',
+      },
       email: {
         type: Sequelize.STRING,
         unique: true,

@@ -4,6 +4,7 @@ class Tree extends Model {
   static init(sequelize) {
     super.init(
       {
+        user_id: Sequelize.INTEGER,
         name: Sequelize.STRING,
         description: Sequelize.STRING,
         latitude: Sequelize.STRING,
@@ -23,7 +24,7 @@ class Tree extends Model {
       foreignKey: 'avatar_id',
       as: 'tree_image',
     });
-    this.belongsTo(models.User, { foreignKey: 'leader', as: 'lider' });
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
   }
 }
 

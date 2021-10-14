@@ -13,9 +13,8 @@ const upload = multer(multerConfig);
 
 const routes = new Router();
 routes.post('/users', UserController.store);
-routes.post('/usersWeb', UserController.storeWeb);
+
 routes.post('/sessions', SessionController.store);
-routes.post('/sessionsWeb', SessionController.storeWeb);
 
 routes.get('/Tree', TreeController.find);
 routes.get('/Tree/:id', TreeController.findId);

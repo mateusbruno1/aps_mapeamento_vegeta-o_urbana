@@ -4,29 +4,12 @@ import User from '../models/User';
 
 class TreeController {
   async store(req, res) {
-    const {
-      name,
-      locale,
-      description,
-      day,
-      hour_started,
-      hour_finish,
-      leader,
-      latitude,
-      longitude,
-      contact,
-      avatar_id,
-    } = req.body;
+    const { name, description, latitude, longitude, avatar_id } = req.body;
 
     const tree = await Tree.create({
       name,
-      locale,
+      user_id: req.userId,
       description,
-      day,
-      hour_started,
-      hour_finish,
-      leader,
-      contact,
       latitude,
       longitude,
       avatar_id,
@@ -36,7 +19,15 @@ class TreeController {
   }
 
   async find(req, res) {
-    const Trees = await Tree.findAll();
+    const Trees = await Tree.findAll({
+      include: [
+        {
+          model: File,
+          as: 'tree_image',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
+    });
     return res.json(Trees);
   }
 
@@ -46,12 +37,12 @@ class TreeController {
       include: [
         {
           model: File,
-          as: 'avatar_Tree',
+          as: 'tree_image',
           attributes: ['id', 'path', 'url'],
         },
         {
           model: User,
-          as: 'lider',
+          as: 'user',
           attributes: ['name', 'phone'],
         },
       ],
@@ -62,7 +53,7 @@ class TreeController {
   async update(req, res) {
     const { id } = req.params;
     const tree = await Tree.findByPk(id);
-    await Tree.update(req.body);
+    await tree.update(req.body);
 
     return res.json({ tree });
   }

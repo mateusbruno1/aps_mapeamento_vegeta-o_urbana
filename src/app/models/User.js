@@ -11,26 +11,21 @@ class User extends Model {
         neighborhood: Sequelize.STRING,
         state: Sequelize.STRING,
         cep: Sequelize.STRING,
-        gender: Sequelize.STRING,
-        baptism_date: Sequelize.DATE,
-        date_of_birth: Sequelize.DATE,
         phone: Sequelize.STRING,
         email: Sequelize.STRING,
         city: Sequelize.STRING,
-        complement: Sequelize.STRING,
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
-        provider: Sequelize.BOOLEAN,
-        leader: Sequelize.BOOLEAN,
         avatar_id: Sequelize.INTEGER,
-        player_id: Sequelize.STRING,
-        concierge: Sequelize.BOOLEAN,
       },
       {
         sequelize,
       }
     );
     this.addHook('beforeSave', async (user) => {
+      if (user.password) {
+        user.password_hash = await bcrypt.hash(user.password, 8);
+      }
       if (!user.phone) {
         user.phone = '';
       }
@@ -40,12 +35,7 @@ class User extends Model {
 
   static associate(models) {
     this.belongsTo(models.Uploads, { foreignKey: 'avatar_id', as: 'avatar' });
-    this.belongsToMany(models.Event, {
-      through: 'users_events',
-      foreignKey: 'user_id',
-      as: 'events',
-    });
-    this.hasMany(models.Companers, { as: 'companers' });
+    this.hasMany(models.Tree, { foreignKey: 'user_id', as: 'user' });
   }
 
   checkPassword(password) {
