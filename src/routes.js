@@ -18,14 +18,13 @@ routes.post('/sessions', SessionController.store);
 
 routes.get('/Tree', TreeController.find);
 routes.get('/Tree/:id', TreeController.findId);
+routes.post('/files', upload.array('file'), FileController.store);
 
 routes.use(authMiddleware);
 
 routes.get('/users', UserController.find);
 
 routes.post('/Tree', TreeController.store);
-
-routes.post('/files', upload.array('file'), FileController.store);
 
 routes.put('/Tree/:id', TreeController.update);
 
